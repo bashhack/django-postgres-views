@@ -51,3 +51,4 @@ README.rst
 pip-selfcheck.json
 tags
 pip-wheel-metadata
+.python-version
