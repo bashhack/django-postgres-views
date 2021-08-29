@@ -28,13 +28,13 @@ class ViewTestCase(TestCase):
         """Look at the Postgres View table to ensure views were created.
         """
         with closing(connection.cursor()) as cur:
-            cur.execute('''SELECT COUNT(*) FROM postgres_views
+            cur.execute('''SELECT COUNT(*) FROM pg_views
                         WHERE viewname LIKE 'viewtest_%';''')
 
             count, = cur.fetchone()
             self.assertEqual(count, 4)
 
-            cur.execute('''SELECT COUNT(*) FROM postgres_matviews
+            cur.execute('''SELECT COUNT(*) FROM pg_matviews
                         WHERE matviewname LIKE 'viewtest_%';''')
 
             count, = cur.fetchone()
@@ -51,7 +51,7 @@ class ViewTestCase(TestCase):
         """
         call_command('clear_postgres_views', *[], **{})
         with closing(connection.cursor()) as cur:
-            cur.execute('''SELECT COUNT(*) FROM postgres_views
+            cur.execute('''SELECT COUNT(*) FROM pg_views
                         WHERE viewname LIKE 'viewtest_%';''')
 
             count, = cur.fetchone()
@@ -184,7 +184,7 @@ class DependantViewTestCase(TestCase):
         call_command('sync_postgres_views', '--force')
 
         with closing(connection.cursor()) as cur:
-            cur.execute("""SELECT COUNT(*) FROM postgres_views
+            cur.execute("""SELECT COUNT(*) FROM pg_views
                         WHERE viewname LIKE 'viewtest_%';""")
 
             count, = cur.fetchone()
@@ -219,7 +219,7 @@ class DependantViewTestCase(TestCase):
         call_command('sync_postgres_views', '--force')
 
         with closing(connection.cursor()) as cur:
-            cur.execute("""SELECT COUNT(*) FROM postgres_views
+            cur.execute("""SELECT COUNT(*) FROM pg_views
                         WHERE viewname LIKE 'viewtest_%';""")
 
             count, = cur.fetchone()

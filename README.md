@@ -81,7 +81,7 @@ class PreferredCustomer(pg.View):
 
 ## Usage
 
-To map onto a View, simply extend `postgres_views.view.View`, assign SQL to the
+To map onto a View, simply extend `pg_views.view.View`, assign SQL to the
 `sql` argument and define a `db_table`. You must _always_ set `managed = False`
 on the `Meta` class.
 
