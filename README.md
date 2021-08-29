@@ -2,7 +2,7 @@
 
 [![Circle CI](https://circleci.com/gh/bashhack/django-postgres-views.png)](https://circleci.com/gh/bashhack/django-postgres-views)
 
-Adds first-class support for [PostgreSQL Views][django-postgres-views] in the Django ORM
+Adds first-class support for [PostgreSQL Views](https://www.postgresql.org/docs/9.1/sql-createview.html) in the Django ORM
 
 [pg-views]: http://www.postgresql.org/docs/9.1/static/sql-createview.html
 
