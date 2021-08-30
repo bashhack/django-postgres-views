@@ -149,6 +149,13 @@ python manage.py sync_postgres_views --force
 
 This will forcibly update any views that conflict with your new SQL.
 
+### Migrations
+
+When running migrations, we will automatically sync your new views using a
+`postmigration` signal, if at any moment you want to override this functionality
+you can supplement your own by adding the full path to `PGVIEW_SYNC_VIEW_PATH`
+with your own migration command.
+
 ### Dependencies
 
 You can specify other views you depend on. This ensures the other views are

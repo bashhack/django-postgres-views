@@ -10,8 +10,10 @@ logger = logging.getLogger('django_postgres_views.sync_postgres_views')
 
 
 class ViewSyncer(object):
-    def run(self, force, update, **options):
+    def __init__(self):
         self.synced = []
+
+    def run(self, force, update, **options):
         backlog = []
         for view_cls in apps.get_models():
             if not (isinstance(view_cls, type) and

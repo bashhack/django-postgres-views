@@ -8,6 +8,7 @@ from django.db import connection
 from django.db.models import signals
 from django.dispatch import receiver
 from django.test import TestCase
+from django_postgres_views.models import ViewSyncer
 from django_postgres_views.signals import view_synced, all_views_synced
 
 from . import models
@@ -236,3 +237,35 @@ class DependantViewTestCase(TestCase):
                 cur.execute(
                     """SELECT name from
                     viewtest_dependantmaterializedview;""")
+
+    def test_tenant_schemas(self):
+        """Test that postgres_views plays nice with tenant aware applications.
+                There are popular packages that add tenant support to applications.
+                These applications extend/ enhance the `connection` object to pass
+                the schema that is currently being accessed.
+                """
+        # In a tenant app, the models are separated between "public" where
+        # all the common data exists and the "tenant" which you would have
+        # one or more of, the former is where you would add your specific
+        # data. The tenant app keeps track of this, all tables just have a
+        # name, no schema inside the `db_table` since that would limit you
+        # to a single tenant.
+
+
+        original_name = models.CustomSchemaView._meta.db_table
+        schema_name, table_name = original_name.split('.')
+
+        connection.schema_name = schema_name
+        with connection.cursor() as cur:
+            # Set up the conditions of how the tenant applications work
+            models.CustomSchemaView._meta.db_table = table_name
+            cur.execute("SET search_path = {0}".format(','.join([schema_name,
+                                                                 'public'])))
+
+            vs = ViewSyncer()
+            vs.run_backlog([models.CustomSchemaView], True, True)
+
+            # Clean up, lets put everything the way we found it.
+            cur.execute("SET search_path = {0}".format('public'))
+            models.CustomSchemaView._meta.db_table = original_name
+            del connection.schema_name
