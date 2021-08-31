@@ -78,11 +78,19 @@ def create_view(connection, view_name, view_query, update=True, force=False,
     the new one.
     """
 
+    connection_schema_name = getattr(connection, "schema_name", None)
+
     if '.' in view_name:
         vschema, vname = view_name.split('.', 1)
-    elif hasattr(connection, 'schema_name'):
+    elif connection_schema_name:
         # Support for tenant awareness (see: useful for multi-tenancy apps like django-tenant-schemas + django-tenant)
-        vschema, vname = connection.schema_name, view_name
+        vschema, vname = connection_schema_name, view_name
+
+        if connection_schema_name == "public":
+            # In the most commonly used libraries, the `public` schema is not explicitly populated with tenant-specific
+            # data - given this generalized pattern, this library opts to take an opinionated approach in preventing
+            # writing Postgres views to the `public` schema to isolate views to their respective tenant scope.
+            return 'MULTI_TENANT_ON_PUBLIC'
     else:
         vschema, vname = 'public', view_name
 
