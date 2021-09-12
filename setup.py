@@ -13,7 +13,7 @@ except (IOError, ImportError):
 
 setup(
     name='django-postgres-views',
-    version='0.0.2',
+    version='0.0.3',
     description='Support for PostgreSQL views in Django',
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
