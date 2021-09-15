@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.4
+
+- Prevent writing views to `test` schema if multi-tenant `schema_name` set on `connection`
+
+
 ## 0.0.3
 
 - Prevent writing views to `public` schema if multi-tenant `schema_name` set on `connection`
