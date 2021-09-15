@@ -79,6 +79,8 @@ class ViewSyncer(object):
                         "--force required to update")
                 elif status == 'MULTI_TENANT_ON_PUBLIC':
                     msg = "on public schema (multi-tenant config detected), skipping"
+                elif status == 'MULTI_TENANT_ON_TEST':
+                    msg = "on test schema (multi-tenant config detected), skipping"
                 logger.info("django_postgres_views %(python_name)s %(msg)s" % {
                     'python_name': name,
                     'msg': msg})

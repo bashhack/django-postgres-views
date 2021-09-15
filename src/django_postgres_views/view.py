@@ -91,6 +91,9 @@ def create_view(connection, view_name, view_query, update=True, force=False,
             # data - given this generalized pattern, this library opts to take an opinionated approach in preventing
             # writing Postgres views to the `public` schema to isolate views to their respective tenant scope.
             return 'MULTI_TENANT_ON_PUBLIC'
+
+        if connection_schema_name == "test":
+            return 'MULTI_TENANT_ON_TEST'
     else:
         vschema, vname = 'public', view_name
 
